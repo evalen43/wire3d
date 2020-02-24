@@ -36,6 +36,8 @@ for x in myroot.findall('constants'):
     print(x.text)
 
 for x in myroot.findall('nodes'):
+    nodetag=x.tag
+    nodeattrib=x.attrib
     print(x.tag,x.attrib)
     line = x.text.strip()
     lines=line.split('\n')
@@ -48,7 +50,8 @@ for x in myroot.findall('nodes'):
 
         
 for x in myroot.findall('elements'):
-    
+    elemtag=x.tag
+    elemattrib=x.attrib
     print(x.tag,x.attrib)
     line = x.text.strip()
     lines=line.split('\n')
@@ -60,32 +63,63 @@ for x in myroot.findall('elements'):
         i +=1
     
 for x in myroot.findall('section'):
-    sections.append(x.text)
+    sectag=x.tag
+    secattrib=x.attrib
     print(x.tag,x.attrib)
-    print(x.text)          
+    line = x.text.strip()
+    lines=line.split('\n')
+    nsec=len(lines)
+    i=0
+    while i < nsec:
+        sections.append(lines[i])
+        print(lines[i])
+        i +=1         
 for x in myroot.findall('material'):
-    material.append(x.text)
+    materialtag=x.tag
+    materialattrib=x.attrib
     print(x.tag,x.attrib)
-    print(x.text)    
+    line = x.text.strip()
+    lines=line.split('\n')
+    nmat=len(lines)
+    i=0
+    while i < nmat:
+        material.append(lines[i])
+        print(lines[i])
+        i +=1            
 
 for x in myroot.findall('boundary'):
-    boundary.append(x.text)
+    boundtag=x.tag
+    boundattrib=x.attrib
     print(x.tag,x.attrib)
-    print(x.text)    
+    line = x.text.strip()
+    lines=line.split('\n')
+    nbound=len(lines)
+    i=0
+    while i < nbound:
+        boundary.append(lines[i])
+        print(lines[i])
+        i +=1        
 for x in myroot.findall('loading'):
-    loading.append(x.text)
+    case=x.find('case').text
+    print(case)
+    loadednodes=x.find('loadednodes')
+    #loading.append(x.text)
     print(x.tag,x.attrib)
-    print(x.text)           
+    print(loadednodes) 
+    print(case)          
 #print(myroot.tag)
 
-for coor in nodes:
-    
+''' for coor in nodes:
     print(coor)
-print(elements)
-print(sections)
-print(material)
-print(boundary)
-print(loading)
+for elem in elements:    
+    print(elem)
+for sect in sections:    
+    print(sect)
+for mat in material:
+    print(mat)
+for bound in boundary:    
+    print(bound)
+print(loading) '''
 
 ''' file1=open(root.filename,'r')
 Lines=[]
