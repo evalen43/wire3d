@@ -26,8 +26,12 @@ material=[]
 sections=[]
 boundary=[]
 loading=[]
+jnload=[]
 mytree=ET.parse(root.filename)
 myroot=mytree.getroot()
+
+for child in myroot:
+    print(child.tag,child.attrib)
 
 for x in myroot.findall('constants'):
    
@@ -100,13 +104,26 @@ for x in myroot.findall('boundary'):
         print(lines[i])
         i +=1        
 for x in myroot.findall('loading'):
-    case=x.find('case').text
-    print(case)
-    loadednodes=x.find('loadednodes')
-    #loading.append(x.text)
     print(x.tag,x.attrib)
-    print(loadednodes) 
-    print(case)          
+    case=x.find('case')
+    print(case.tag,case.attrib)
+    loadednodes=x.find('loadednodes')
+    print(loadednodes.tag,loadednodes.attrib)
+    loadedmembers=x.find('loadedmembers')
+    print(loadedmembers.tag,loadedmembers.attrib)
+    line = loadednodes.text.strip()
+    lines=line.split('\n')
+    nload=len(lines)
+    i=0
+    while i < nload:
+        jnload.append(lines[i])
+        print(lines[i])
+        i +=1    
+    #loading.append(x.text)
+'''     for root in myroot:
+        print(root) '''
+    #print(loadednodes) 
+    #print(case)          
 #print(myroot.tag)
 
 ''' for coor in nodes:
