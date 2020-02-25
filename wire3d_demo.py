@@ -14,6 +14,7 @@ from mpl_toolkits.mplot3d import axes3d
 import matplotlib.pyplot as plt
 from tkinter import Tk
 from tkinter import filedialog
+import numpy as np
 
 
 
@@ -103,14 +104,14 @@ for x in myroot.findall('boundary'):
         boundary.append(lines[i])
         print(lines[i])
         i +=1        
-for x in myroot.findall('loading'):
+""" for x in myroot.findall('loading'):
     print(x.tag,x.attrib)
     case=x.find('case')
     print(case.tag,case.attrib)
     loadednodes=x.find('loadednodes')
-    print(loadednodes.tag,loadednodes.attrib)
+    print(loadednodes)
     loadedmembers=x.find('loadedmembers')
-    print(loadedmembers.tag,loadedmembers.attrib)
+    print(loadedmembers)
     line = loadednodes.text.strip()
     lines=line.split('\n')
     nload=len(lines)
@@ -118,11 +119,28 @@ for x in myroot.findall('loading'):
     while i < nload:
         jnload.append(lines[i])
         print(lines[i])
-        i +=1    
+        i +=1     """
     #loading.append(x.text)
-'''     for root in myroot:
-        print(root) '''
-    #print(loadednodes) 
+for child in myroot:
+    print(child.tag,child.attrib) 
+    
+i=0
+line=[]
+nodeid=[None]*nn
+x=np.empty(nn,dtype=float)
+y=np.empty(nn, dtype=float)
+z=np.empty(nn, dtype=float)
+while i < nn  :
+    line= nodes[i].split() 
+    num=len(line)
+      
+    nodeid[i]=line[0]
+    if num >0 :
+        x[i]=float(line[1])
+    if num > 1 :    
+        y[i]=float(line[2])
+    i +=1 
+print(nodeid,x,y) 
     #print(case)          
 #print(myroot.tag)
 
