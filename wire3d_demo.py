@@ -127,7 +127,7 @@ for x in myroot.findall('section'):
 for x in myroot.findall('material'):
     materialtag=x.tag
     materialattrib=x.attrib
-    print(x.tag,x.attrib)
+    #print(x.tag,x.attrib)
     line = x.text.strip()
     lines=line.split('\n')
     nmat=len(lines)
@@ -140,7 +140,7 @@ for x in myroot.findall('material'):
 for x in myroot.findall('boundary'):
     boundtag=x.tag
     boundattrib=x.attrib
-    print(x.tag,x.attrib)
+    #print(x.tag,x.attrib)
     line = x.text.strip()
     lines=line.split('\n')
     nbound=len(lines)
@@ -179,7 +179,7 @@ while i<ne :
     elemid[i]=line[0]
     if num >0 :
         result=nodeid.index(line[1])
-        print(result)
+        #print(result)
         incidence[i][0]=int(nodeid.index(line[1]))
         incidence[i][1]=int(nodeid.index(line[2]))
         i +=1  
