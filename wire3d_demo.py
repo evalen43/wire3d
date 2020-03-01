@@ -76,53 +76,53 @@ jnload=[]
 mytree=ET.parse(root.filename)
 myroot=mytree.getroot()
 
-for child in myroot:
-    print(child.tag,child.attrib)
+#for child in myroot:
+    #print(child.tag,child.attrib)
 
 for x in myroot.findall('constants'):
    
     constants.append(x.text)
-    print(x.tag,x.attrib)
-    print(x.text)
+    #print(x.tag,x.attrib)
+    #print(x.text)
 
 for x in myroot.findall('nodes'):
     nodetag=x.tag
     nodeattrib=x.attrib
-    print(x.tag,x.attrib)
+    #print(x.tag,x.attrib)
     line = x.text.strip()
     lines=line.split('\n')
     nn=len(lines)
     i=0
     while i < nn:
         nodes.append(lines[i])
-        print(lines[i])
+        #print(lines[i])
         i +=1
 
         
 for x in myroot.findall('elements'):
     elemtag=x.tag
     elemattrib=x.attrib
-    print(x.tag,x.attrib)
+    #print(x.tag,x.attrib)
     line = x.text.strip()
     lines=line.split('\n')
     ne=len(lines)
     i=0
     while i < ne:
         elements.append(lines[i])
-        print(lines[i])
+        #print(lines[i])
         i +=1
     
 for x in myroot.findall('section'):
     sectag=x.tag
     secattrib=x.attrib
-    print(x.tag,x.attrib)
+    #print(x.tag,x.attrib)
     line = x.text.strip()
     lines=line.split('\n')
     nsec=len(lines)
     i=0
     while i < nsec:
         sections.append(lines[i])
-        print(lines[i])
+        #print(lines[i])
         i +=1         
 for x in myroot.findall('material'):
     materialtag=x.tag
@@ -134,7 +134,7 @@ for x in myroot.findall('material'):
     i=0
     while i < nmat:
         material.append(lines[i])
-        print(lines[i])
+        #print(lines[i])
         i +=1            
 
 for x in myroot.findall('boundary'):
@@ -147,7 +147,7 @@ for x in myroot.findall('boundary'):
     i=0
     while i < nbound:
         boundary.append(lines[i])
-        print(lines[i])
+        #print(lines[i])
         i +=1        
 
 
@@ -169,7 +169,7 @@ while i < nn  :
     if num > 1 :    
         y[i]=float(line[2])
     i +=1 
-print(nodeid,x,y) 
+#print(nodeid,x,y) 
 incidence=np.arange(ne*2).reshape(ne,2)
 i=0
 while i<ne :
@@ -183,7 +183,7 @@ while i<ne :
         incidence[i][0]=int(nodeid.index(line[1]))
         incidence[i][1]=int(nodeid.index(line[2]))
         i +=1  
-print(incidence)
+#print(incidence)
 
 fig = plt.figure()
 fig.set_size_inches(10,10)
