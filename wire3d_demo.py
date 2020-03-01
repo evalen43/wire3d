@@ -10,16 +10,60 @@ A very basic demonstration of a wireframe plot.
 
     
 import xml.etree.ElementTree as ET
-from mpl_toolkits.mplot3d import axes3d
+import mpl_toolkits.mplot3d as plot3d
 import matplotlib.pyplot as plt
-from tkinter import Tk
+from tkinter import Tk, Canvas, Frame, BOTH
 from tkinter import filedialog
+from matplotlib.collections import LineCollection
 import numpy as np
+class Example(Frame):
+    
+    def __init__(self):
+        super().__init__()
+
+        self.initUI()
+        self.drawLines(x,y,incidence,ne)
 
 
+    def initUI(self):
 
+        self.master.title("Lines")
+        self.pack(fill=BOTH, expand=1)
+
+        canvas = Canvas(self)
+        canvas.create_line(15, 25, 200, 25)
+        canvas.create_line(300, 35, 300, 200, dash=(4, 2))
+        canvas.create_line(55, 85, 155, 85, 105, 180, 55, 85)
+
+        canvas.pack(fill=BOTH, expand=1)
+        
+    def drawLines(self,x,y,incidence,ne) :
+        self.x=x
+        self.y=y
+        self.incidence=incidence
+        self.ne=ne
+        canvas=Canvas(self)  
+        i=0
+        while i < self.ne :
+            
+            canvas.create_line(self.x[self.incidence[i][0]],self.y[self.incidence[i][0]],self.x[self.incidence[i][1]],self.y[self.incidence[i][1]])
+            i +=1
+        canvas.pack(fill=BOTH, expand=1)    
+         
+
+#def main():
 root=Tk()
+
 root.filename=filedialog.askopenfilename(title="File Open")
+root.geometry("400x250+300+300")
+    #root.mainloop()
+
+#if __name__ == '__main__':
+ #   main()
+    
+
+
+
 constants=[]
 nodes=[]
 elements=[]
@@ -28,6 +72,7 @@ sections=[]
 boundary=[]
 loading=[]
 jnload=[]
+
 mytree=ET.parse(root.filename)
 myroot=mytree.getroot()
 
@@ -104,29 +149,13 @@ for x in myroot.findall('boundary'):
         boundary.append(lines[i])
         print(lines[i])
         i +=1        
-""" for x in myroot.findall('loading'):
-    print(x.tag,x.attrib)
-    case=x.find('case')
-    print(case.tag,case.attrib)
-    loadednodes=x.find('loadednodes')
-    print(loadednodes)
-    loadedmembers=x.find('loadedmembers')
-    print(loadedmembers)
-    line = loadednodes.text.strip()
-    lines=line.split('\n')
-    nload=len(lines)
-    i=0
-    while i < nload:
-        jnload.append(lines[i])
-        print(lines[i])
-        i +=1     """
-    #loading.append(x.text)
-for child in myroot:
-    print(child.tag,child.attrib) 
+
+
     
 i=0
 line=[]
 nodeid=[None]*nn
+elemid=[None]*ne
 x=np.empty(nn,dtype=float)
 y=np.empty(nn, dtype=float)
 z=np.empty(nn, dtype=float)
@@ -141,41 +170,40 @@ while i < nn  :
         y[i]=float(line[2])
     i +=1 
 print(nodeid,x,y) 
-    #print(case)          
-#print(myroot.tag)
-
-''' for coor in nodes:
-    print(coor)
-for elem in elements:    
-    print(elem)
-for sect in sections:    
-    print(sect)
-for mat in material:
-    print(mat)
-for bound in boundary:    
-    print(bound)
-print(loading) '''
-
-''' file1=open(root.filename,'r')
-Lines=[]
-
-count=0
-with open(root.filename) as fp:
-    Lines=fp.readlines()
-    for line in Lines:
-        #Lines.append(line)
-        count +=1
-        print("Line{}: {}".format(count,line.strip())) '''
-    
-#file1.close()    
+incidence=np.arange(ne*2).reshape(ne,2)
+i=0
+while i<ne :
+    line= elements[i].split() 
+    num=len(line)
+      
+    elemid[i]=line[0]
+    if num >0 :
+        result=nodeid.index(line[1])
+        print(result)
+        incidence[i][0]=int(nodeid.index(line[1]))
+        incidence[i][1]=int(nodeid.index(line[2]))
+        i +=1  
+print(incidence)
 
 fig = plt.figure()
-ax = fig.add_subplot(111, projection='3d')
-
-# Grab some test data.
-X, Y, Z = axes3d.get_test_data(0.05)
+fig.set_size_inches(10,10)
+ax = fig.add_subplot(111, projection='3d')#, aspect='equal')
+ax.view_init(azim=120)
+#X, Y, Z = axes3d.get_test_data(0.05)
 
 # Plot a basic wireframe.
-ax.plot_wireframe(X, Y, Z, rstride=10, cstride=10)
+
+ax.scatter3D(x, y, z,color='black', marker='s') #, c=np.array(zz), cmap='Greens') #,rstride=10, cstride=10)
+for i in range(ne):
+    xs=x[incidence[i][0]],x[incidence[i][1]]
+    ys=y[incidence[i][0]],y[incidence[i][1]]
+    zs= 0.0, 0.0
+    line=plot3d.art3d.Line3D(xs,ys,zs)
+    ax.add_line(line)
+
+ex = Example()
+ex.drawLines(x,y,incidence,ne)
 
 plt.show()
+
+
