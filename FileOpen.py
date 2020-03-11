@@ -17,6 +17,7 @@ class Mywin(wx.Frame):
       hbox1 = wx.BoxSizer(wx.HORIZONTAL) 
       hbox2 = wx.BoxSizer(wx.HORIZONTAL) 
       hbox3 = wx.BoxSizer(wx.HORIZONTAL) 
+      hbox4 = wx.BoxSizer(wx.HORIZONTAL) 
 		
       self.text = wx.TextCtrl(pnl, size = (-1,200),style = wx.TE_MULTILINE) 
       self.btn1 = wx.Button(pnl, label = "Open a File")
@@ -27,12 +28,13 @@ class Mywin(wx.Frame):
 		
       hbox1.Add(self.text, proportion = 1, flag = wx.ALIGN_CENTRE) 
       hbox2.Add(self.btn1, proportion = 1, flag = wx.RIGHT, border = 10) 
-      hbox2.Add(self.btn2, proportion = 1, flag = wx.LEFT, border = 10) 
+      hbox4.Add(self.btn2, proportion = 1, flag = wx.LEFT, border = 10) 
       hbox3.Add(self.lbl1, proportion = 1, flag = wx.LEFT, border = 10) 
       
       vbox.Add(hbox2, proportion = 1, flag = wx.ALIGN_CENTRE,border=10) 
       vbox.Add(hbox3, proportion = 1, flag = wx.ALIGN_LEFT,border=10)    
-      vbox.Add(hbox1, proportion = 1, flag = wx.EXPAND|wx.ALIGN_LEFT) 
+      vbox.Add(hbox1, proportion = 1, flag = wx.EXPAND|wx.ALIGN_LEFT,border=10) 
+      vbox.Add(hbox4, proportion = 1, flag = wx.EXPAND|wx.ALIGN_LEFT,border=10)
          
       pnl.SetSizer(vbox) 
       self.Centre() 
