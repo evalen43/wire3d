@@ -15,47 +15,66 @@ import re
 import threading
 #import wire3d_mod as wiremod
 
-class Application(Frame):
+""" class Application(Frame):
     
     def _init_(self,root):
-        self.root=root
+        self.root=root """
 
                
         
         
         
-    def initUI(self,root):
-        self.root=root
-        self.root.columnconfigure(0,weight=2)
-        self.root.rowconfigure(0,weight=2)         
-        mainframe=ttk.Frame(self.root, borderwidth=5, width=200,height=100,padding="3 3 22 22")
-        mainframe.grid(column=0,row=0,sticky=(N,W,E,S))
-        ttk.Button(mainframe,text="Open File",command=self.openfile),mainframe.grid(column=3,row=3,sticky=W)
-        self.root.state("zoomed")
-        for child in mainframe.winfo_children():
-            child.grid(padx=5,pady=5)
-        self.root.bind('<Return>',self.openfile(root))
-        self.root.geometry("400x250+300+300") 
+""" def initUI(root):
+    self.root=root
+    self.root.columnconfigure(0,weight=2)
+    self.root.rowconfigure(0,weight=2)         
+    mainframe=ttk.Frame(self.root, borderwidth=5, width=200,height=100,padding="3 3 22 22")
+    mainframe.grid(column=0,row=0,sticky=(N,W,E,S))
+    ttk.Button(mainframe,text="Open File",command=self.openfile),mainframe.grid(column=3,row=3,sticky=W)
+    self.root.state("zoomed")
+    for child in mainframe.winfo_children():
+        child.grid(padx=5,pady=5)
+    self.root.bind('<Return>',self.openfile(root)) """
+    
            
-    def openfile(self,root):
-        self.root=root
-        self.root.filename=filedialog.askopenfilename(title="File Open")
-        return self.root.filename        
+def openfile(*args):
+    #self.root=root
+    root.filename=filedialog.askopenfilename(title="File Open")
+    return root.filename        
 
 if __name__ == '__main__':
  
     root=Tk()
     root.title("Wire3D")
-    app=Application(root)
-    app.initUI(root)
-    root.filename=app.openfile(root)
-    mytree=ET.parse(root.filename)
+    root.geometry("400x250+300+300") 
+    filein=StringVar()
+    btn1=ttk.Button(root,text="Open File",command=openfile,textvariable=filein)
+    btn1.pack()
+    filein=btn1.invoke()
+    #root.filename=openfile(root)
+    #mytree=ET.parse(root.filename)
+    mytree=ET.parse(filein)
     myroot=mytree.getroot()
     print(myroot.tag,myroot.attrib)
-
     for child in myroot:
-        print(child.tag,child.attrib) 
+        print(child.tag,child.attrib)
     root.mainloop()
+    #app=Application(root)
+    #app.initUI(root)
+       
+"""     mainframe=ttk.Frame(root, borderwidth=5, width=200,height=100,padding="3 3 22 22")
+    root.columnconfigure(0,weight=2)
+    root.rowconfigure(0,weight=2)      
+    mainframe.grid(column=0,row=0,sticky=(N,W,E,S))
+    btn1=ttk.Button(root,text="Open File",command=openfile,mainframe.grid(column=3,row=3,sticky=W)  """
+    
+       
+    
+
+    
+
+  
+   
     
     
 
