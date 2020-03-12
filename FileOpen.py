@@ -24,17 +24,20 @@ class App(wx.App):
         
 class MyPanel(wx.Panel) :
        
-   def _init_(self,parent):
-      super(MyPanel,self)._init_(parent)
+   def __init__(self,parent):
+      super(MyPanel,self).__init__(parent)
       
-      self.sizer=wx.BoxSizer(wx.HORIZONTAL)
+      sizer=wx.BoxSizer(wx.HORIZONTAL)
       self.button1 = wx.Button(self, label="Button 1")
+      sizer.Add(self.button1,0)
+      self.button1.Bind(wx.EVT_BUTTON,self.OnButton,self.button1)
+                  
       self.button2 = wx.Button(self, label="Button 2")
-      self.Bind(wx.EVT_BUTTON,self.OnButton,self.button1)
-      self.Bind(wx.EVT_BUTTON,self.OnFrameExit,self.button2)       
-      self.sizer.Add(self.button1)
-      self.sizer.Add(self.button2)
-      self.SetSizer(self.sizer)
+      sizer.Add(self.button2)
+      self.button2.Bind(wx.EVT_BUTTON,self.OnFrameExit,self.button2)       
+
+
+      self.SetSizer(sizer)
             
       
    def OnButton(self, event):
@@ -50,8 +53,8 @@ class MyPanel(wx.Panel) :
       
 
 
-##if__name__ == '__main__':
+if __name__ == '__main__':
 
-ex =App()
+   ex =App()
 
-ex.MainLoop()
+   ex.MainLoop()
