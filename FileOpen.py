@@ -2,70 +2,56 @@ import wx
 import os 
 import xml.etree.ElementTree as ET
 
-class Mywin(wx.Frame): 
-
+class MyFrame(wx.Frame): 
    
    def __init__(self, parent, title): 
-      super(Mywin, self).__init__(parent, title = title)  
-         
-      self.InitUI() 
-         
-   def InitUI(self):    
-      self.count = 0 
-      pnl = wx.Panel(self) 
-      vbox = wx.BoxSizer(wx.VERTICAL) 
-      hbox1 = wx.BoxSizer(wx.HORIZONTAL) 
-      hbox2 = wx.BoxSizer(wx.HORIZONTAL) 
-      hbox3 = wx.BoxSizer(wx.HORIZONTAL) 
-      hbox4 = wx.BoxSizer(wx.HORIZONTAL) 
-		
-      self.text = wx.TextCtrl(pnl, size = (-1,200),style = wx.TE_MULTILINE) 
-      self.btn1 = wx.Button(pnl, label = "Open a File")
-      self.btn2=wx.Button(pnl, label="Exit") 
-      self.Bind(wx.EVT_BUTTON, self.OnClick, self.btn1) 
-      self.Bind(wx.EVT_BUTTON,self.OnExit,self.btn2)
-      self.lbl1=wx.StaticText(pnl,label="Input File")
-		
-      hbox1.Add(self.text, proportion = 1, flag = wx.ALIGN_CENTRE) 
-      hbox2.Add(self.btn1, proportion = 1, flag = wx.RIGHT, border = 10) 
-      hbox4.Add(self.btn2, proportion = 1, flag = wx.LEFT, border = 10) 
-      hbox3.Add(self.lbl1, proportion = 1, flag = wx.LEFT, border = 10) 
+      super(MyFrame, self).__init__(parent, title = title,size=(600,500)) 
       
-      vbox.Add(hbox2, proportion = 1, flag = wx.ALIGN_CENTRE,border=10) 
-      vbox.Add(hbox3, proportion = 1, flag = wx.ALIGN_LEFT,border=10)    
-      vbox.Add(hbox1, proportion = 1, flag = wx.EXPAND|wx.ALIGN_LEFT,border=10) 
-      vbox.Add(hbox4, proportion = 1, flag = wx.EXPAND|wx.ALIGN_LEFT,border=10)
-         
-      pnl.SetSizer(vbox) 
-      self.Centre() 
-      self.Show(True) 
+      #Set the panel
+      self.panel=MyPanel(self)
+      
+
+      
+class App(wx.App):
+       
+   def OnInit(self):
+      self.frame=MyFrame(parent=None, title='Wire3D')
+      self.frame.Show()
+      return True  
+
+      
+
         
-   def OnExit(self, e):
-      exit()
+class MyPanel(wx.Panel) :
+       
+   def _init_(self,parent):
+      super(MyPanel,self)._init_(parent)
       
-   def OnClick(self, e): 
-      wildcard = "XML Files (*.xml)|*.xml"
-      dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", wildcard, wx.FD_OPEN)
-      if dlg.ShowModal() == wx.ID_OK: 
-         f = open(dlg.GetPath(), 'r') 
-         with f: 
-            data = f.read() 
-            self.text.SetValue(data)
-         fname=f.name 
-      dlg.Destroy()
-      return fname 
-
-                                  
-ex = wx.App() 
-myw=Mywin(None, 'XML FileDialog Demo')
-'''fname=myw.fname
-mytree=ET.parse(fname)
-myroot=mytree.getroot()      
+      self.sizer=wx.BoxSizer(wx.HORIZONTAL)
+      self.button1 = wx.Button(self, label="Button 1")
+      self.button2 = wx.Button(self, label="Button 2")
+      self.Bind(wx.EVT_BUTTON,self.OnButton,self.button1)
+      self.Bind(wx.EVT_BUTTON,self.OnFrameExit,self.button2)       
+      self.sizer.Add(self.button1)
+      self.sizer.Add(self.button2)
+      self.SetSizer(self.sizer)
+            
       
-#ScanDocument(f.name) 
+   def OnButton(self, event):
+      button = event.EventObject
+      print("Button (%s) event at Panel!" % button.Label)
+      if button is self.button1:
+         event.Skip()
+         
+   def OnFrameExit(self,event) :
+      theFrame=event.EventObject
+      print("Frame(%s)is closing!"%theFrame.Title) 
+      event.Skip()           
+      
 
-for param in myroot :
-   print(param.tag,param.attrib) 
-   for child in myroot :
-      print(child.tag,child.attrib) ''' 
+
+##if__name__ == '__main__':
+
+ex =App()
+
 ex.MainLoop()
