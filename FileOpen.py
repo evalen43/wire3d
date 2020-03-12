@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 class MyFrame(wx.Frame): 
    
    def __init__(self, parent, title): 
-      super(MyFrame, self).__init__(parent, title = title,size=(900,500)) 
+      super(MyFrame, self).__init__(parent, title = title,size=(1000,500)) 
       
       #Set the panel
       self.panel=MyPanel(self)
@@ -63,8 +63,9 @@ class MyPanel(wx.Panel) :
          event.Skip()
          
    def OnExit(self,event) :
-      theFrame=event.EventObject
-      print("Frame(%s)is closing!"%theFrame.Title) 
+      self.Destroy()   
+      '''theFrame=event.EventObject
+      print("Frame(%s)is closing!"%theFrame.Title) '''
       event.Skip() 
                 
    def OnClick(self, e): 
