@@ -9,8 +9,10 @@ class MyFrame(wx.Frame):
       
       #Set the panel
       self.panel=MyPanel(self)
+      #self.panel=wx.Panel(self)
       
       self.menuSetup()
+      #self.panelSetup()
       
    def menuSetup(self):
       menuBar=wx.MenuBar()
@@ -18,11 +20,12 @@ class MyFrame(wx.Frame):
       m_HelpMenu=wx.Menu()
 
       openItem=m_FileMenu.Append(wx.ID_OPEN,'&Open')
+      m_FileMenu.AppendSeparator() #(wx.ID_OPEN,'&Open')      
       exitItem=m_FileMenu.Append(wx.ID_EXIT,'&Quit','Exit the Application')
       menuBar.Append(m_FileMenu,'&File')
       menuBar.Append(m_HelpMenu,'&Help')      
-      #m_FileMenu.Append(wx.ID_OPEN,'&Open')
-      m_FileMenu.Append(wx.ID_SAVE,'&Save')  
+
+      #m_FileMenu.Append(wx.ID_SAVE,'&Save')  
       #m_FileMenu.Append(wx.ID_EXIT,'&Quit')
       m_HelpMenu.Append(wx.ID_ABOUT,'&About')                    
       self.SetMenuBar(menuBar)
@@ -43,12 +46,7 @@ class MyFrame(wx.Frame):
          fname=f.name 
       dlg.Destroy()
       return fname        
-class App(wx.App):
-       
-   def OnInit(self):
-      self.frame=MyFrame(parent=None, title='Wire3D')
-      self.frame.Show()
-      return True  
+
         
 class MyPanel(wx.Panel) :
        
@@ -56,7 +54,7 @@ class MyPanel(wx.Panel) :
       super(MyPanel,self).__init__(parent)
       
 
-      
+   #def panelSetup(self)   :
       vbox = wx.BoxSizer(wx.VERTICAL) 
       #vbox1 = wx.BoxSizer(wx.VERTICAL) 
       hbox1 = wx.BoxSizer(wx.HORIZONTAL) 
@@ -104,7 +102,12 @@ class MyPanel(wx.Panel) :
          event.Skip()           
       '''theFrame=event.EventObject
       print("Frame(%s)is closing!"%theFrame.Title) '''
-      
+class App(wx.App):
+       
+   def OnInit(self):
+      self.frame=MyFrame(parent=None, title='Wire3D')
+      self.frame.Show()
+      return True        
                 
      
 
