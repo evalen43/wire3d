@@ -10,6 +10,38 @@ class MyFrame(wx.Frame):
       #Set the panel
       self.panel=MyPanel(self)
       
+      self.menuSetup()
+      
+   def menuSetup(self):
+      menuBar=wx.MenuBar()
+      m_FileMenu=wx.Menu()
+      m_HelpMenu=wx.Menu()
+      exitItem=m_FileMenu.Append(wx.ID_EXIT,'&Quit','status mag...')
+      openItem=m_FileMenu.Append(wx.ID_OPEN,'&Open')
+      menuBar.Append(m_FileMenu,'&File')
+      menuBar.Append(m_HelpMenu,'&Help')      
+      m_FileMenu.Append(wx.ID_OPEN,'&Open')
+      m_FileMenu.Append(wx.ID_SAVE,'&Save')  
+      m_FileMenu.Append(wx.ID_EXIT,'&Quit')
+      m_HelpMenu.Append(wx.ID_ABOUT,'&About')                    
+      self.SetMenuBar(menuBar)
+      self.Bind(wx.EVT_MENU,self.Quit,exitItem)
+      self.Bind(wx.EVT_MENU,self.Open,openItem)      
+      #self.SetTitle('Epic Window')  
+      #self.Show(True)  
+   def Quit(self,e) :
+      self.Close()   
+   def Open(self, e): 
+      wildcard = "XML Files (*.xml)|*.xml"
+      dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", wildcard, wx.FD_OPEN)
+      if dlg.ShowModal() == wx.ID_OK: 
+         f = open(dlg.GetPath(), 'r') 
+         with f: 
+            data = f.read() 
+            self.panel.text.SetValue(data)
+         fname=f.name 
+      dlg.Destroy()
+      return fname        
 class App(wx.App):
        
    def OnInit(self):
@@ -22,8 +54,10 @@ class MyPanel(wx.Panel) :
    def __init__(self,parent):
       super(MyPanel,self).__init__(parent)
       
+
+      
       vbox = wx.BoxSizer(wx.VERTICAL) 
-      vbox1 = wx.BoxSizer(wx.VERTICAL) 
+      #vbox1 = wx.BoxSizer(wx.VERTICAL) 
       hbox1 = wx.BoxSizer(wx.HORIZONTAL) 
       hbox2 = wx.BoxSizer(wx.HORIZONTAL) 
       hbox3 = wx.BoxSizer(wx.HORIZONTAL) 
@@ -56,29 +90,22 @@ class MyPanel(wx.Panel) :
       #self.SetSizer(vbox1) 
             
       
-   def OnClick1(self, event):
+   def OnClick(self, event):
       button = event.EventObject
       print("Button (%s) event at Panel!" % button.Label)
       if button is self.button1:
          event.Skip()
          
    def OnExit(self,event) :
-      self.Destroy()   
+      button = event.EventObject
+      if button is self.button1:          
+         self.Close()
+         event.Skip()           
       '''theFrame=event.EventObject
       print("Frame(%s)is closing!"%theFrame.Title) '''
-      event.Skip() 
+      
                 
-   def OnClick(self, e): 
-      wildcard = "XML Files (*.xml)|*.xml"
-      dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", wildcard, wx.FD_OPEN)
-      if dlg.ShowModal() == wx.ID_OK: 
-         f = open(dlg.GetPath(), 'r') 
-         with f: 
-            data = f.read() 
-            self.text.SetValue(data)
-         fname=f.name 
-      dlg.Destroy()
-      return fname       
+     
 
 
 if __name__ == '__main__':
