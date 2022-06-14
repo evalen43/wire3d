@@ -74,8 +74,8 @@ class MyPanel(wx.Panel) :
       
       hbox1.Add(self.btn1, proportion = 1, flag = wx.LEFT, border = 10)  
       hbox2.Add(self.lbl1, proportion = 1, flag = wx.LEFT, border = 10)            
-      hbox3.Add(self.text, proportion = 1, flag = wx.EXPAND|wx.ALIGN_CENTRE,border=15)
-      hbox3.Add(self.textout, proportion = 1, flag = wx.EXPAND|wx.ALIGN_CENTRE,border=15)
+      #hbox3.Add(self.text, proportion = 1, flag = wx.EXPAND|wx.ALIGN_CENTRE,border=15)
+      #hbox3.Add(self.textout, proportion = 1, flag = wx.EXPAND|wx.ALIGN_CENTRE,border=15)
       hbox4.Add(self.btn2, proportion = 1, flag = wx.LEFT, border = 10) 
 
       #hbox5.Add(self.textout, proportion = 1, flag = wx.EXPAND|wx.ALIGN_CENTRE,border=15)
