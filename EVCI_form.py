@@ -261,7 +261,7 @@ class EVCI_Form ( wx.Frame ):
 			f = open(dlg.GetPath(), 'r')
 			with f:
 				data = f.read()
-				self.m_panel2.m_textfilein.SetValue(data)
+				self.m_textfilein.SetValue(data)
 			fname = f.name
 			self.m_statusBar1.PushStatusText(fname)
 		elif dlg.ShowModal() == wx.ID_CANCEL:
@@ -298,7 +298,7 @@ class EVCI_Form ( wx.Frame ):
 			global fname
 			with f: 
 				data = f.read() 
-				self.m_panel2.m_textfilein.SetValue(data)       
+				self.m_textfilein.SetValue(data)       
 			fname=f.name 
 			self.m_statusBar1.title=fname
 			self.m_statusBar1 = fname
