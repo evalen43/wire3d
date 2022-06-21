@@ -214,7 +214,8 @@ class EVCI_Form ( wx.Frame ):
 
 		self.SetMenuBar( self.m_menubar1 )
 
-		self.m_statusBar1 = self.CreateStatusBar( 3, wx.STB_SIZEGRIP, wx.ID_ANY )
+		#self.m_statusBar1 = self.CreateStatusBar( 3, wx.STB_SIZEGRIP, wx.ID_ANY )
+		self.m_statusBar1 = self.CreateStatusBar(3, wx.STB_SIZEGRIP, wx.ID_ANY)
 		self.m_statusBar1.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_HIGHLIGHTTEXT ) )
 
 
@@ -262,7 +263,7 @@ class EVCI_Form ( wx.Frame ):
 				data = f.read()
 				self.m_panel2.m_textfilein.SetValue(data)
 			fname = f.name
-			self.m_statusBar1=fname
+			self.m_statusBar1.PushStatusText(fname)
 		elif dlg.ShowModal() == wx.ID_CANCEL:
 			wx.MessageBox("No file selected","Try again: select input file",wx.ICON_QUESTION |wx.OK)
 			return
