@@ -15,6 +15,8 @@ import os
 ###########################################################################
 
 class EVCI_Form ( wx.Frame ):
+    
+    
 
 	def __init__( self, parent ):
 		wx.Frame.__init__ ( self, parent, id = wx.ID_ANY, title = u"Structural Analysis & Design ", pos = wx.DefaultPosition, size = wx.Size( 1100,700 ), style = wx.CAPTION|wx.CLOSE_BOX|wx.DEFAULT_FRAME_STYLE|wx.TAB_TRAVERSAL )
@@ -124,7 +126,7 @@ class EVCI_Form ( wx.Frame ):
 		self.m_menubar1 = wx.MenuBar( 0 )
 		self.m_menubar1.SetForegroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_BTNTEXT ) )
 		self.m_menubar1.SetBackgroundColour( wx.SystemSettings.GetColour( wx.SYS_COLOUR_ACTIVEBORDER ) )
-
+# Menu
 		self.File_mnu = wx.Menu()
 		self.m_Open = wx.MenuItem( self.File_mnu, wx.ID_ANY, u"Open", u"Open Input File", wx.ITEM_NORMAL )
 		self.m_Open.SetBitmap( wx.ArtProvider.GetBitmap( wx.ART_FILE_OPEN, wx.ART_MENU ) )
@@ -241,6 +243,8 @@ class EVCI_Form ( wx.Frame ):
 		self.Bind( wx.EVT_MENU, self.wxmnu_lrfd, id = self.m_lrfd.GetId() )
 		self.Bind( wx.EVT_MENU, self.wxmnu_2rd, id = self.m_2rd.GetId() )
 
+		fname=' '
+
 	def __del__( self ):
 		pass
 
@@ -248,6 +252,7 @@ class EVCI_Form ( wx.Frame ):
 	# Virtual event handlers, override them in your derived class
 	def OpenFile_click( self, e ):
 		#event.Skip()
+		global fname
 		wildcard = "XML Files (*.xml)|*.xml"
 		dlg = wx.FileDialog(self, "Choose a file", os.getcwd(),
 		                    "", wildcard, wx.FD_OPEN)
@@ -255,10 +260,14 @@ class EVCI_Form ( wx.Frame ):
 			f = open(dlg.GetPath(), 'r')
 			with f:
 				data = f.read()
-				self.panel.text.SetValue(data)
+				self.m_panel2.m_textfilein.SetValue(data)
 			fname = f.name
+			self.m_statusBar1=fname
+		elif dlg.ShowModal() == wx.ID_CANCEL:
+			wx.MessageBox("No file selected","Try again: select input file",wx.ICON_QUESTION |wx.OK)
+			return
 		dlg.Destroy()
-		return fname
+		#return fname
 
 	def SaveFile_click( self, event ):
 		event.Skip()
@@ -271,7 +280,10 @@ class EVCI_Form ( wx.Frame ):
 
 	def Exit_click( self, e ):
 		#event.Skip()
+		if wx.MessageBox("Quit Program?","Please, confirm", wx.ICON_QUESTION | wx.YES_NO,self) == wx.NO:
+			return
 		self.Close()
+   		#wx.Exit()
 
 	def OnText_changed( self, event ):
 		event.Skip()
@@ -282,12 +294,18 @@ class EVCI_Form ( wx.Frame ):
 		dlg = wx.FileDialog(self, "Choose a file", os.getcwd(), "", wildcard, wx.FD_OPEN)
 		if dlg.ShowModal() == wx.ID_OK: 
 			f = open(dlg.GetPath(), 'r') 
+			global fname
 			with f: 
 				data = f.read() 
-				self.panel.text.SetValue(data)
+				self.m_panel2.m_textfilein.SetValue(data)       
 			fname=f.name 
+			self.m_statusBar1.title=fname
+			self.m_statusBar1 = fname
+		elif dlg.ShowModal() == wx.ID_CANCEL:
+			wx.MessageBox("No file selected","Try again: select input file", wx.ICON_QUESTION | wx.OK)
+			return
 		dlg.Destroy()
-		return fname         
+		#return fname         
 
 	def wxmnu_inputSave_Click( self, event ):
 		event.Skip()
@@ -297,6 +315,8 @@ class EVCI_Form ( wx.Frame ):
 
 	def wxmmnu_Exit_Click( self, e ):
 		#event.Skip()
+		if wx.MessageBox("Quit Program?", "Please, confirm", wx.ICON_QUESTION | wx.YES_NO, self) == wx.NO:
+			return
 		self.Close()
 
 	def wxmnu_cut( self, event ):
