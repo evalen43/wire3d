@@ -38,7 +38,7 @@ class MyFrame(wx.Frame):
          f = open(dlg.GetPath(), 'r') 
          with f: 
             data = f.read() 
-            self.panel.text.SetValue(data)
+            self.panel.textout.SetValue(data)
          fname=f.name 
       dlg.Destroy()
       return fname        
@@ -74,8 +74,8 @@ class MyPanel(wx.Panel) :
       
       hbox1.Add(self.btn1, proportion = 1, flag = wx.LEFT, border = 10)  
       hbox2.Add(self.lbl1, proportion = 1, flag = wx.LEFT, border = 10)            
-      #hbox3.Add(self.text, proportion = 1, flag = wx.EXPAND|wx.ALIGN_CENTRE,border=15)
-      #hbox3.Add(self.textout, proportion = 1, flag = wx.EXPAND|wx.ALIGN_CENTRE,border=15)
+      hbox3.Add(self.text, proportion = 1)#, flag = wx.EXPAND|wx.ALIGN_CENTRE,border=15)
+      hbox3.Add(self.textout, proportion = 1)#, flag = wx.EXPAND|wx.ALIGN_CENTRE,border=15)
       hbox4.Add(self.btn2, proportion = 1, flag = wx.LEFT, border = 10) 
 
       #hbox5.Add(self.textout, proportion = 1, flag = wx.EXPAND|wx.ALIGN_CENTRE,border=15)
@@ -94,7 +94,8 @@ class MyPanel(wx.Panel) :
       button = event.EventObject
       print("Button (%s) event at Panel!" % button.Label)
       if button is self.button1:
-         event.Skip()
+         #event.Skip()
+         self.Open()
          
    def OnExit(self,event) :
       button = event.EventObject

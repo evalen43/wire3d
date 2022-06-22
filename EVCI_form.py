@@ -38,8 +38,8 @@ class EVCI_Form ( wx.Frame ):
 
 		self.m_bOpenFile = wx.BitmapButton( self.m_toolBar1, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 40,30 ), wx.BU_AUTODRAW|0 )
 
-		self.m_bOpenFile.SetDefault()
-		self.m_bOpenFile.SetLabelMarkup( u"Open File" )
+		#self.m_bOpenFile.SetDefault()
+		#self.m_bOpenFile.SetLabelMarkup( u"Open File" )
 		self.m_bOpenFile.SetBitmap( wx.ArtProvider.GetBitmap( wx.ART_FILE_OPEN, wx.ART_BUTTON ) )
 		self.m_bOpenFile.SetBitmapCurrent( wx.ArtProvider.GetBitmap( wx.ART_GO_FORWARD, wx.ART_MENU ) )
 		self.m_bOpenFile.SetToolTip( u"Open File" )
@@ -76,7 +76,6 @@ class EVCI_Form ( wx.Frame ):
 		self.m_toolBar1.AddSeparator()
 
 		self.m_bExit = wx.BitmapButton( self.m_toolBar1, wx.ID_ANY, wx.NullBitmap, wx.DefaultPosition, wx.Size( 40,30 ), wx.BU_AUTODRAW|0 )
-
 		self.m_bExit.SetBitmap( wx.ArtProvider.GetBitmap( wx.ART_QUIT, wx.ART_BUTTON ) )
 		self.m_bExit.SetToolTip( u"Exit Program" )
 		self.m_bExit.SetMaxSize( wx.Size( 40,40 ) )
