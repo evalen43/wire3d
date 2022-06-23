@@ -7,7 +7,7 @@
 
 import wx
 import wx.xrc
-import wx.dataview
+import wx.dataview as dv
 from tokenize import tokenize, untokenize, NUMBER, STRING, NAME, OP
 import os
 
@@ -410,7 +410,8 @@ class EVCI_Form ( wx.Frame ):
 		elif strutype == "Truss2D":	ndf = 2
 		elif strutype == "Grid":  	ndf = 3
 		elif strutype == "Frame2D_8DOF": ndf = 4
-		else: 	ndf = 3
+		else: 	ndf = 0
+		print(strutype)
 
     #     if child.GetType() == wx.xml.XML_PI_NODE and child.GetName() == "target":
 
@@ -419,15 +420,18 @@ class EVCI_Form ( wx.Frame ):
 
         # Other code here...
 		child = doc.GetRoot().GetChildren()
-		rootId = m_dataViewTreeCtrl3.AppendContainer(wx.dataview.wxDataViewItem(0), strutype, 0)
+		m_dataViewTreeCtrl3=dv.DataViewCtrl()
+		rootID=wx.DataViewModel()
+		m_dataViewTreeCtrl3.AssociateModel(rootID)
+		#rootId = m_dataViewTreeCtrl3.AppendContainer(wx.dataview.wxDataViewItem(0), strutype, 0)
 		while child:
 			tagname = child.GetName()
 			content = child.GetNodeContent()  # process text enclosed by tag1/tag1
 
 			if tagname == "title":
 				projName = content
-				project = m_dataViewTreeCtrl3.AppendContainer(rootId,"Project Name",1)
-				m_dataViewTreeCtrl3.AppendItem(project,projName,1)
+				#project = m_dataViewTreeCtrl3.AppendContainer(rootId,"Project Name",1)
+				#m_dataViewTreeCtrl3.AppendItem(project,projName,1)
 				# attrvalue1 = child.GetAttribute("attr1", "default-value")
 				#attrvalue2 = child.GetAttribute("attr2", "default-value")
 			elif tagname == "code":
