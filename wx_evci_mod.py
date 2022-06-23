@@ -1,10 +1,13 @@
 import wx
 from tokenize import tokenize, untokenize, NUMBER, STRING, NAME, OP
 from io import BytesIO
-import wx.dataview
+import wx.xml
+#import wx.dataview
 
 g=9.806
 ndf=0
+lineinput = []
+fyield=0.0
 def TokNperM2(unitF):
     if unitF == "kN/m2":
         tonewton=1.0
@@ -50,7 +53,8 @@ def XML_reader(filein):
     elif strutype =="Truss2D": ndf=2
     elif strutype =="Grid":    ndf=3
     elif strutype =="Frame2D_8DOF": ndf=4
-    else: ndfe=3    
+    else: ndf=3    
+    print(strutype)
 
     #     if child.GetType() == wx.xml.XML_PI_NODE and child.GetName() == "target":
 
@@ -63,7 +67,7 @@ def XML_reader(filein):
         tagname = child.GetName()
         content = child.GetNodeContent()  # process text enclosed by tag1/tag1
         scaleS = 0.0
-        lineinput=[""]
+
         if tagname == "title":
             projName=content
             # # process attributes of tag1
@@ -73,10 +77,19 @@ def XML_reader(filein):
             UnitS = child.GetAttribute("unitS", "kN/m2")  # UnitS: stress unit ...
             if UnitS == "default-value": scaleS=1.0
             else: scaleS=TokNperM2(UnitS)                    
-            tokens=tokenize.generate_tokens(content)
-            for token in tokens:
-                lineinput.append(token)
+            #tokens=tokenize(content)
+            content=content.replace("="," ")
+            content=content.replace("\n"," ")
+            lineinput=content.split()
+            print(lineinput)
+            # for token in tokens:
+            #     lineinput.append(token)
+            global fyield
             for x in lineinput:
                 if x=="AISC": Code=x
-                elif x=="fy": fyield=float(x)*scaleS        
+                elif x=="fy":
+                    continue
+                    fyield=float(x)*scaleS 
+            print(fyield)
+            lineinput.clear()
         child = child.GetNext()
