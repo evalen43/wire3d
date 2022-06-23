@@ -310,6 +310,7 @@ class EVCI_Form ( wx.Frame ):
 			fname=f.name 
 			self.m_statusBar1.title=fname
 			self.m_statusBar1 = fname
+			print(fname)
 			XML_reader(fname, self.m_dataViewTreeCtrl3)
 		elif dlg.ShowModal() == wx.ID_CANCEL:
 			wx.MessageBox("No file selected","Try again: select input file", wx.ICON_QUESTION | wx.OK)
@@ -399,7 +400,7 @@ class EVCI_Form ( wx.Frame ):
 
 	def XML_reader(filein, m_dataViewTreeCtrl3):
     # start processing the XML file
-		doc = wx.xml.XmlDocument()
+		doc = wx.xml.XmlDocument(filein)
 		if not doc.Load(filein):
 			return False
 
