@@ -8,8 +8,17 @@
 import wx
 import wx.xrc
 import wx.dataview
+from tokenize import tokenize, untokenize, NUMBER, STRING, NAME, OP
 import os
 
+from wx_evci_mod import TokNperM2, XML_reader
+
+g=9.806
+strutype=""
+scaleS = 0.0
+lineinput = []
+ndf=0
+fname = ' '
 ###########################################################################
 ## Class EVCI_Form
 ###########################################################################
@@ -243,7 +252,7 @@ class EVCI_Form ( wx.Frame ):
 		self.Bind( wx.EVT_MENU, self.wxmnu_lrfd, id = self.m_lrfd.GetId() )
 		self.Bind( wx.EVT_MENU, self.wxmnu_2rd, id = self.m_2rd.GetId() )
 
-		fname=' '
+		
 
 	def __del__( self ):
 		pass
@@ -301,6 +310,7 @@ class EVCI_Form ( wx.Frame ):
 			fname=f.name 
 			self.m_statusBar1.title=fname
 			self.m_statusBar1 = fname
+			XML_reader(fname, self.m_dataViewTreeCtrl3)
 		elif dlg.ShowModal() == wx.ID_CANCEL:
 			wx.MessageBox("No file selected","Try again: select input file", wx.ICON_QUESTION | wx.OK)
 			return
@@ -351,6 +361,87 @@ class EVCI_Form ( wx.Frame ):
 
 	def wxmnu_2rd( self, event ):
 		event.Skip()
+
+
+	def TokNperM2(unitF):
+		if unitF == "kN/m2":
+			tonewton = 1.0
+		elif unitF == "lb/sqf":
+			tonewton = 0.047880258888889
+		elif unitF == "ksi":
+			tonewton = 6894.757280000001
+		elif unitF == "kgf/m2":
+			tonewton = g
+		elif unitF == "ton/sqf":
+			tonewton = 107.25177991111
+		elif unitF == "psi":
+			tonewton = 6.89475728
+		else:
+			tonewton = 1.0
+
+
+	def TokNperM3(unitF):
+		if unitF == "kN/m3":
+			tonewton = 1.0
+		elif unitF == "lbf/ft3":
+			tonewton = 0.1570865731
+		elif unitF == "kips/inch3":
+			tonewton = 271447.14116097
+		elif unitF == "kgf/m3":
+			tonewton = g/1000.0
+		elif unitF == "tonf/ft3":
+			tonewton = 314.1731461238
+		elif unitF == "t/m3":
+			tonewton = g
+		else:
+			tonewton = 1.0
+
+
+	def XML_reader(filein, m_dataViewTreeCtrl3):
+    # start processing the XML file
+		doc = wx.xml.XmlDocument()
+		if not doc.Load(filein):
+			return False
+
+		strutype = doc.GetRoot().GetName()
+		if strutype == "Frame2D":	ndf = 3
+		elif strutype == "Frame3D":	ndf = 6
+		elif strutype == "Truss3D":	ndf = 3
+		elif strutype == "Truss2D":	ndf = 2
+		elif strutype == "Grid":  	ndf = 3
+		elif strutype == "Frame2D_8DOF": ndf = 4
+		else: 	ndf = 3
+
+    #     if child.GetType() == wx.xml.XML_PI_NODE and child.GetName() == "target":
+
+    #         # process Process Instruction contents
+    #         pi = child.GetContent()
+
+        # Other code here...
+		child = doc.GetRoot().GetChildren()
+		rootId = m_dataViewTreeCtrl3.AppendContainer(wx.dataview.wxDataViewItem(0), strutype, 0)
+		while child:
+			tagname = child.GetName()
+			content = child.GetNodeContent()  # process text enclosed by tag1/tag1
+
+			if tagname == "title":
+				projName = content
+				project = m_dataViewTreeCtrl3.AppendContainer(rootId,"Project Name",1)
+				m_dataViewTreeCtrl3.AppendItem(project,projName,1)
+				# attrvalue1 = child.GetAttribute("attr1", "default-value")
+				#attrvalue2 = child.GetAttribute("attr2", "default-value")
+			elif tagname == "code":
+				# UnitS: stress unit ...
+				UnitS = child.GetAttribute("unitS", "kN/m2")
+				if UnitS == "default-value": 	scaleS = 1.0
+			else:     			scaleS =TokNperM2(UnitS)
+			tokens = tokenize.generate_tokens(content)
+			for token in tokens:
+				lineinput.append(token)
+			for x in lineinput:
+				if x == "AISC": Code = x
+				elif x == "fy": fyield = float(x)*scaleS
+			child = child.GetNext()
   
 if __name__ == '__main__':
 # When this module is run (not imported) then create the app, the
