@@ -39,7 +39,8 @@ def TokNperM3(unitF):
     elif unitF=="t/m3":
         tonewton=g
     else:
-        tonewton=1.0        
+        tonewton=1.0
+    return tonewton            
 
 def XML_reader(filein):
     # start processing the XML file
@@ -55,7 +56,7 @@ def XML_reader(filein):
     elif strutype =="Grid":    ndf=3
     elif strutype =="Frame2D_8DOF": ndf=4
     else: ndf=3    
-    print(strutype)
+    #print(strutype)
 
     #     if child.GetType() == wx.xml.XML_PI_NODE and child.GetName() == "target":
 
@@ -79,15 +80,11 @@ def XML_reader(filein):
             print(UnitS)
             if UnitS == "default-value": scaleS=1.0
             else: scaleS=TokNperM2(UnitS)                    
-            #tokens=tokenize(content)
-            print(scaleS)
             content=content.replace("="," ")
             content=content.replace("\n"," ")
             lineinput=content.split()
             print(lineinput)
             print(scaleS)
-            # for token in tokens:
-            #     lineinput.append(token)
             global fyield
             i=0
             while i<len(lineinput):
@@ -96,6 +93,6 @@ def XML_reader(filein):
                 elif lineinput[i]=="fy":
                     fyield = float(lineinput[i+1])*scaleS
                 i +=1    
-            print(fyield)
+            #print(fyield)
             lineinput.clear()
         child = child.GetNext()
