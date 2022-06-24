@@ -22,7 +22,8 @@ def TokNperM2(unitF):
     elif unitF=="psi":
         tonewton = 6.89475728
     else:
-        tonewton=1.0    
+        tonewton=1.0
+    return tonewton        
         
 def TokNperM3(unitF):
     if unitF=="kN/m3":
@@ -75,21 +76,26 @@ def XML_reader(filein):
             #attrvalue2 = child.GetAttribute("attr2", "default-value")
         elif tagname == "code":
             UnitS = child.GetAttribute("unitS", "kN/m2")  # UnitS: stress unit ...
+            print(UnitS)
             if UnitS == "default-value": scaleS=1.0
             else: scaleS=TokNperM2(UnitS)                    
             #tokens=tokenize(content)
+            print(scaleS)
             content=content.replace("="," ")
             content=content.replace("\n"," ")
             lineinput=content.split()
             print(lineinput)
+            print(scaleS)
             # for token in tokens:
             #     lineinput.append(token)
             global fyield
-            for x in lineinput:
-                if x=="AISC": Code=x
-                elif x=="fy":
-                    continue
-                    fyield=float(x)*scaleS 
+            i=0
+            while i<len(lineinput):
+                if lineinput[i]=="code":
+                    Code=lineinput[i+1]
+                elif lineinput[i]=="fy":
+                    fyield = float(lineinput[i+1])*scaleS
+                i +=1    
             print(fyield)
             lineinput.clear()
         child = child.GetNext()
